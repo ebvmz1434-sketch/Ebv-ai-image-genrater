@@ -1,5 +1,0 @@
-{
-  "buildCommand": "echo Building",
-  "outputDirectory": ".",
-  "devCommand": "echo Dev"
-}
