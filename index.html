@@ -6,7 +6,6 @@
 <title>ImageForge - AI Image Generator</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-
 :root {
     --primary: #FFC72C;
     --primary-glow: #FFD700;
@@ -18,7 +17,6 @@
     --text-dim: #969696;
     --border: #2a2a2a;
 }
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--dark);
@@ -27,377 +25,85 @@ body {
     overflow-x: hidden;
     position: relative;
 }
-
-/* Animated glowing orbs in background */
-.bg-orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 0;
-}
-.orb1 {
-    width: 500px; height: 500px;
-    background: var(--primary);
-    top: -100px; left: -100px;
-    animation: drift1 18s ease-in-out infinite;
-}
-.orb2 {
-    width: 400px; height: 400px;
-    background: var(--secondary);
-    bottom: -80px; right: -80px;
-    animation: drift2 22s ease-in-out infinite;
-}
-@keyframes drift1 {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(80px, 60px) scale(1.15); }
-}
-@keyframes drift2 {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(-70px, -50px) scale(1.1); }
-}
-
-nav {
-    background: rgba(20,20,20,0.85);
-    backdrop-filter: blur(12px);
-    padding: 20px 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 1px solid var(--border);
-    transition: box-shadow 0.3s;
-}
-
-.logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    background: linear-gradient(90deg, var(--primary-glow), var(--secondary), var(--primary-glow));
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 2px;
-    animation: shimmer 4s linear infinite;
-}
-@keyframes shimmer {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-.nav-links { display: flex; gap: 30px; list-style: none; position: relative; z-index: 1; }
-
-.nav-links a {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
-    position: relative;
-}
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -6px; left: 0;
-    width: 0; height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    transition: width 0.3s;
-}
+.bg-orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; z-index: 0; }
+.orb1 { width: 500px; height: 500px; background: var(--primary); top: -100px; left: -100px; animation: drift1 18s ease-in-out infinite; }
+.orb2 { width: 400px; height: 400px; background: var(--secondary); bottom: -80px; right: -80px; animation: drift2 22s ease-in-out infinite; }
+@keyframes drift1 { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(80px, 60px) scale(1.15); } }
+@keyframes drift2 { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-70px, -50px) scale(1.1); } }
+nav { background: rgba(20,20,20,0.85); backdrop-filter: blur(12px); padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); }
+.logo { font-size: 1.8rem; font-weight: 700; background: linear-gradient(90deg, var(--primary-glow), var(--secondary), var(--primary-glow)); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; animation: shimmer 4s linear infinite; }
+@keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+.nav-links { display: flex; gap: 30px; list-style: none; }
+.nav-links a { color: var(--text); text-decoration: none; font-weight: 500; transition: color 0.3s; }
 .nav-links a:hover { color: var(--primary-glow); }
-.nav-links a:hover::after { width: 100%; }
-
-.hero {
-    padding: 160px 50px 110px;
-    text-align: center;
-    margin-top: 70px;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
-
+.hero { padding: 160px 50px 110px; text-align: center; margin-top: 70px; position: relative; overflow: hidden; z-index: 1; }
 .hero-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
-
 .hero h1 { font-size: 3.1rem; margin-bottom: 20px; font-weight: 700; letter-spacing: -1px; }
-.hero h1 .highlight {
-    background: linear-gradient(90deg, var(--primary-glow), var(--secondary));
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 5s linear infinite;
-}
+.hero h1 .highlight { background: linear-gradient(90deg, var(--primary-glow), var(--secondary)); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 5s linear infinite; }
 .hero p { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 34px; font-weight: 300; }
-
 .cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-
-.btn {
-    padding: 15px 40px;
-    border: none;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.35s;
-    text-decoration: none;
-    display: inline-block;
-    letter-spacing: 0.5px;
-    position: relative;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, var(--primary-glow), var(--secondary));
-    color: var(--dark);
-    box-shadow: 0 0 20px rgba(255,199,44,0.35), 0 10px 30px rgba(0,0,0,0.4);
-    animation: pulseGlow 2.5s ease-in-out infinite;
-}
-@keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 20px rgba(255,199,44,0.35), 0 10px 30px rgba(0,0,0,0.4); }
-    50% { box-shadow: 0 0 35px rgba(255,199,44,0.6), 0 10px 30px rgba(0,0,0,0.4); }
-}
+.btn { padding: 15px 40px; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.35s; text-decoration: none; display: inline-block; letter-spacing: 0.5px; }
+.btn-primary { background: linear-gradient(135deg, var(--primary-glow), var(--secondary)); color: var(--dark); box-shadow: 0 0 20px rgba(255,199,44,0.35), 0 10px 30px rgba(0,0,0,0.4); animation: pulseGlow 2.5s ease-in-out infinite; }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 20px rgba(255,199,44,0.35), 0 10px 30px rgba(0,0,0,0.4); } 50% { box-shadow: 0 0 35px rgba(255,199,44,0.6), 0 10px 30px rgba(0,0,0,0.4); } }
 .btn-primary:hover:not(:disabled) { transform: translateY(-4px); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; animation: none; }
-
 .btn-secondary { background: transparent; color: var(--primary-glow); border: 2px solid var(--primary-glow); }
-.btn-secondary:hover { background: var(--primary-glow); color: var(--dark); box-shadow: 0 0 25px rgba(255,215,0,0.4); }
-
+.btn-secondary:hover { background: var(--primary-glow); color: var(--dark); }
 .section { padding: 100px 50px; position: relative; z-index: 1; }
 .section-alt { background: var(--dark2); }
-
-.section-title {
-    font-size: 2.3rem;
-    margin-bottom: 50px;
-    text-align: center;
-    color: var(--text);
-}
-.section-title::after {
-    content: '';
-    display: block;
-    width: 100px;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary-glow), var(--secondary));
-    margin: 20px auto 0;
-    border-radius: 2px;
-    box-shadow: 0 0 12px rgba(255,199,44,0.5);
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.gallery-item {
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transition: all 0.4s;
-    background: var(--dark3);
-    border: 1px solid var(--border);
-}
-.gallery-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 45px rgba(255,199,44,0.25);
-    border-color: var(--primary);
-}
-.gallery-item img {
-    width: 100%; height: 260px; object-fit: cover; display: block;
-    background: #333;
-    transition: transform 0.5s;
-}
+.section-title { font-size: 2.3rem; margin-bottom: 50px; text-align: center; color: var(--text); }
+.section-title::after { content: ''; display: block; width: 100px; height: 4px; background: linear-gradient(90deg, var(--primary-glow), var(--secondary)); margin: 20px auto 0; border-radius: 2px; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+.gallery-item { border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.4s; background: var(--dark3); border: 1px solid var(--border); }
+.gallery-item:hover { transform: translateY(-10px); box-shadow: 0 20px 45px rgba(255,199,44,0.25); border-color: var(--primary); }
+.gallery-item img { width: 100%; height: 260px; object-fit: cover; display: block; background: #333; transition: transform 0.5s; }
 .gallery-item:hover img { transform: scale(1.06); }
-
 .gallery-label { padding: 20px; }
 .gallery-label p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 10px; }
 .gallery-label strong { color: var(--text); }
-
-.tag {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--primary-glow), var(--secondary));
-    color: var(--dark);
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.feature-card {
-    background: var(--dark3);
-    padding: 35px;
-    border-radius: 15px;
-    text-align: center;
-    border: 1px solid var(--border);
-    border-top: 3px solid var(--primary);
-    transition: all 0.35s;
-}
-.feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 40px rgba(255,199,44,0.2);
-    border-top-color: var(--secondary);
-}
+.tag { display: inline-block; background: linear-gradient(135deg, var(--primary-glow), var(--secondary)); color: var(--dark); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+.feature-card { background: var(--dark3); padding: 35px; border-radius: 15px; text-align: center; border: 1px solid var(--border); border-top: 3px solid var(--primary); transition: all 0.35s; }
+.feature-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(255,199,44,0.2); border-top-color: var(--secondary); }
 .feature-card h3 { color: var(--text); margin-bottom: 12px; font-size: 1.2rem; }
 .feature-card p { color: var(--text-dim); font-size: 0.9rem; }
-
-.generator-container {
-    max-width: 700px;
-    margin: 0 auto;
-    background: var(--dark3);
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: 0 0 50px rgba(255,199,44,0.1), 0 30px 60px rgba(0,0,0,0.5);
-}
-
-.generator-header {
-    background: linear-gradient(135deg, var(--primary-glow), var(--secondary));
-    background-size: 200% 200%;
-    animation: gradientMove 6s ease infinite;
-    color: var(--dark);
-    padding: 35px;
-    text-align: center;
-}
-@keyframes gradientMove {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
+.generator-container { max-width: 700px; margin: 0 auto; background: var(--dark3); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 0 50px rgba(255,199,44,0.1), 0 30px 60px rgba(0,0,0,0.5); }
+.generator-header { background: linear-gradient(135deg, var(--primary-glow), var(--secondary)); background-size: 200% 200%; animation: gradientMove 6s ease infinite; color: var(--dark); padding: 35px; text-align: center; }
+@keyframes gradientMove { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 .generator-header h2 { font-size: 1.8rem; margin-bottom: 8px; }
-
 .generator-form { padding: 35px; }
-
-.usage-counter {
-    text-align: center;
-    padding: 12px;
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-    color: var(--primary-glow);
-    font-weight: 600;
-}
-
+.usage-counter { text-align: center; padding: 12px; background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 20px; font-size: 0.9rem; color: var(--primary-glow); font-weight: 600; }
 .form-group { margin-bottom: 22px; }
-
 label { display: block; font-weight: 600; color: var(--text); margin-bottom: 10px; font-size: 0.9rem; }
-
-textarea, select {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    background: var(--dark2);
-    color: var(--text);
-    transition: all 0.3s;
-}
-textarea:focus, select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 18px rgba(255,199,44,0.2);
-}
+textarea, select { width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 0.9rem; background: var(--dark2); color: var(--text); transition: all 0.3s; }
+textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 18px rgba(255,199,44,0.2); }
 textarea { resize: vertical; min-height: 100px; }
-
-.submit-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, var(--primary-glow), var(--secondary));
-    color: var(--dark);
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    margin-top: 10px;
-    box-shadow: 0 0 20px rgba(255,199,44,0.25);
-}
+.submit-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--primary-glow), var(--secondary)); color: var(--dark); border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 10px; box-shadow: 0 0 20px rgba(255,199,44,0.25); }
 .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,199,44,0.4); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
-
 .loading { display: none; text-align: center; padding: 20px; color: var(--primary-glow); font-weight: 600; }
 .loading.show { display: block; }
-
-.spinner {
-    display: inline-block;
-    width: 22px; height: 22px;
-    border: 3px solid rgba(255,199,44,0.2);
-    border-top-color: var(--primary-glow);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-right: 10px;
-    vertical-align: middle;
-}
+.spinner { display: inline-block; width: 22px; height: 22px; border: 3px solid rgba(255,199,44,0.2); border-top-color: var(--primary-glow); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; vertical-align: middle; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
 .status { padding: 14px; border-radius: 10px; margin-bottom: 18px; display: none; font-size: 0.9rem; }
-.status.show { display: block; animation: fadeSlide 0.35s ease-out; }
-@keyframes fadeSlide { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.status.show { display: block; }
 .status.error { background: #3a1414; color: #ff8a8a; border: 1px solid #832525; }
 .status.success { background: #12331c; color: #7de89a; border: 1px solid #1e5c33; }
 .status.limit { background: #332a12; color: #f0c674; border: 1px solid #5c4a1e; }
-
 .result { display: none; text-align: center; padding: 25px 0 0; border-top: 1px solid var(--border); margin-top: 20px; }
-.result.show { display: block; animation: fadeSlide 0.4s ease-out; }
-.result img {
-    max-width: 100%;
-    border-radius: 15px;
-    box-shadow: 0 0 40px rgba(255,199,44,0.2), 0 10px 30px rgba(0,0,0,0.5);
-    margin-bottom: 20px;
-}
-
-.download-btn { background: linear-gradient(135deg, #11998e, #38ef7d); color: #0a0a0a; margin-right: 10px; box-shadow: 0 0 20px rgba(56,239,125,0.25); }
-
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.pricing-card {
-    background: var(--dark3);
-    padding: 40px;
-    border-radius: 15px;
-    text-align: center;
-    border: 2px solid var(--border);
-    transition: all 0.35s;
-}
-.pricing-card:hover { border-color: var(--primary); transform: scale(1.03); box-shadow: 0 15px 40px rgba(255,199,44,0.15); }
-.pricing-card.featured {
-    border-color: var(--primary);
-    background: linear-gradient(135deg, rgba(255,199,44,0.06), rgba(232,57,29,0.06));
-    box-shadow: 0 0 30px rgba(255,199,44,0.15);
-}
-
+.result.show { display: block; }
+.result img { max-width: 100%; border-radius: 15px; box-shadow: 0 0 40px rgba(255,199,44,0.2), 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; }
+.download-btn { background: linear-gradient(135deg, #11998e, #38ef7d); color: #0a0a0a; margin-right: 10px; }
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+.pricing-card { background: var(--dark3); padding: 40px; border-radius: 15px; text-align: center; border: 2px solid var(--border); transition: all 0.35s; }
+.pricing-card:hover { border-color: var(--primary); transform: scale(1.03); }
+.pricing-card.featured { border-color: var(--primary); background: linear-gradient(135deg, rgba(255,199,44,0.06), rgba(232,57,29,0.06)); }
 .price { font-size: 2.3rem; color: var(--primary-glow); margin: 15px 0; font-weight: 700; }
-
 .pricing-list { text-align: left; margin: 25px 0; font-size: 0.9rem; }
 .pricing-list li { padding: 10px 0; border-bottom: 1px solid var(--border); list-style: none; color: var(--text-dim); }
 .pricing-list li:before { content: '+ '; color: var(--primary-glow); font-weight: bold; margin-right: 8px; }
-
-footer {
-    background: var(--dark);
-    padding: 50px;
-    text-align: center;
-    color: var(--text-dim);
-    border-top: 1px solid var(--border);
-    position: relative;
-    z-index: 1;
-}
+footer { background: var(--dark); padding: 50px; text-align: center; color: var(--text-dim); border-top: 1px solid var(--border); position: relative; z-index: 1; }
 footer h3 { color: var(--primary-glow); margin-bottom: 15px; }
-
 @media (max-width: 768px) {
     nav { padding: 15px 20px; flex-direction: column; gap: 15px; }
     .nav-links { gap: 15px; flex-wrap: wrap; justify-content: center; }
@@ -410,10 +116,8 @@ footer h3 { color: var(--primary-glow); margin-bottom: 15px; }
 </style>
 </head>
 <body>
-
 <div class="bg-orb orb1"></div>
 <div class="bg-orb orb2"></div>
-
 <nav>
     <div class="logo">ImageForge</div>
     <ul class="nav-links">
@@ -423,7 +127,6 @@ footer h3 { color: var(--primary-glow); margin-bottom: 15px; }
         <li><a href="#pricing">Pricing</a></li>
     </ul>
 </nav>
-
 <section class="hero">
     <div class="hero-content">
         <h1>Create <span class="highlight">Stunning Images</span> with AI</h1>
@@ -434,61 +137,17 @@ footer h3 { color: var(--primary-glow); margin-bottom: 15px; }
         </div>
     </div>
 </section>
-
 <section class="section" id="gallery">
     <h2 class="section-title">Generated Examples</h2>
     <div class="gallery-grid">
-        <div class="gallery-item">
-            <img src="https://picsum.photos/seed/cityscape1/400/300" alt="Futuristic cityscape">
-            <div class="gallery-label">
-                <p><strong>Futuristic Cityscape</strong></p>
-                <p>Neon lights, cyberpunk style, night scene</p>
-                <span class="tag">Cyberpunk</span>
-            </div>
-        </div>
-        <div class="gallery-item">
-            <img src="https://picsum.photos/seed/abstract2/400/300" alt="Abstract digital art">
-            <div class="gallery-label">
-                <p><strong>Abstract Digital Art</strong></p>
-                <p>Colorful, modern, artistic composition</p>
-                <span class="tag">Digital Art</span>
-            </div>
-        </div>
-        <div class="gallery-item">
-            <img src="https://picsum.photos/seed/portrait3/400/300" alt="Professional portrait">
-            <div class="gallery-label">
-                <p><strong>Professional Portrait</strong></p>
-                <p>Realistic, studio lighting, high quality</p>
-                <span class="tag">Realistic</span>
-            </div>
-        </div>
-        <div class="gallery-item">
-            <img src="https://picsum.photos/seed/fantasy4/400/300" alt="Fantasy illustration">
-            <div class="gallery-label">
-                <p><strong>Fantasy Illustration</strong></p>
-                <p>Dragon, magical elements, epic scene</p>
-                <span class="tag">Fantasy</span>
-            </div>
-        </div>
-        <div class="gallery-item">
-            <img src="https://picsum.photos/seed/anime5/400/300" alt="Anime character">
-            <div class="gallery-label">
-                <p><strong>Anime Character</strong></p>
-                <p>Detailed, colorful, anime style</p>
-                <span class="tag">Anime</span>
-            </div>
-        </div>
-        <div class="gallery-item">
-            <img src="https://picsum.photos/seed/logo6/400/300" alt="Brand logo design">
-            <div class="gallery-label">
-                <p><strong>Brand Logo Design</strong></p>
-                <p>Modern, professional brand identity</p>
-                <span class="tag">Logo</span>
-            </div>
-        </div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/cityscape1/400/300" alt="Futuristic cityscape"><div class="gallery-label"><p><strong>Futuristic Cityscape</strong></p><p>Neon lights, cyberpunk style, night scene</p><span class="tag">Cyberpunk</span></div></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/abstract2/400/300" alt="Abstract digital art"><div class="gallery-label"><p><strong>Abstract Digital Art</strong></p><p>Colorful, modern, artistic composition</p><span class="tag">Digital Art</span></div></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/portrait3/400/300" alt="Professional portrait"><div class="gallery-label"><p><strong>Professional Portrait</strong></p><p>Realistic, studio lighting, high quality</p><span class="tag">Realistic</span></div></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/fantasy4/400/300" alt="Fantasy illustration"><div class="gallery-label"><p><strong>Fantasy Illustration</strong></p><p>Dragon, magical elements, epic scene</p><span class="tag">Fantasy</span></div></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/anime5/400/300" alt="Anime character"><div class="gallery-label"><p><strong>Anime Character</strong></p><p>Detailed, colorful, anime style</p><span class="tag">Anime</span></div></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/logo6/400/300" alt="Brand logo design"><div class="gallery-label"><p><strong>Brand Logo Design</strong></p><p>Modern, professional brand identity</p><span class="tag">Logo</span></div></div>
     </div>
 </section>
-
 <section class="section section-alt" id="features">
     <h2 class="section-title">Why Choose ImageForge</h2>
     <div class="features-grid">
@@ -500,24 +159,20 @@ footer h3 { color: var(--primary-glow); margin-bottom: 15px; }
         <div class="feature-card"><h3>High Quality</h3><p>Professional-grade resolution images ready to use</p></div>
     </div>
 </section>
-
 <section class="section" id="generator">
     <div class="generator-container">
         <div class="generator-header">
             <h2>Create Your Image</h2>
             <p>Describe what you want to see and let AI make it real</p>
         </div>
-
         <div class="generator-form">
             <div class="usage-counter" id="usageCounter">5 free generations remaining</div>
             <div class="status" id="status"></div>
-
             <form id="form">
                 <div class="form-group">
                     <label for="prompt">Describe Your Image</label>
                     <textarea id="prompt" placeholder="Example: A golden retriever astronaut on the moon holding a flag, cinematic lighting, detailed, 4K quality..." required></textarea>
                 </div>
-
                 <div class="form-group">
                     <label for="style">Art Style</label>
                     <select id="style">
@@ -533,11 +188,9 @@ footer h3 { color: var(--primary-glow); margin-bottom: 15px; }
                         <option>steampunk</option>
                     </select>
                 </div>
-
                 <button type="submit" class="submit-btn" id="submitBtn">Generate Image</button>
                 <div class="loading" id="loading"><div class="spinner"></div>Creating your image... (30-60 seconds)</div>
             </form>
-
             <div class="result" id="result">
                 <img id="resultImage" src="" alt="Generated image">
                 <button class="btn download-btn" onclick="downloadImage()">Download</button>
@@ -546,66 +199,22 @@ footer h3 { color: var(--primary-glow); margin-bottom: 15px; }
         </div>
     </div>
 </section>
-
 <section class="section section-alt" id="pricing">
     <h2 class="section-title">Simple Pricing</h2>
     <div class="pricing-grid">
-        <div class="pricing-card">
-            <h3>Starter</h3>
-            <div class="price">Free</div>
-            <p>5 Images</p>
-            <ul class="pricing-list">
-                <li>5 Free Generations</li>
-                <li>Standard Resolution</li>
-                <li>10+ Art Styles</li>
-            </ul>
-            <button class="btn btn-primary">Get Started</button>
-        </div>
-
-        <div class="pricing-card featured">
-            <h3>Professional</h3>
-            <div class="price">$29</div>
-            <p>Per Month</p>
-            <ul class="pricing-list">
-                <li>Unlimited Images</li>
-                <li>4K Resolution</li>
-                <li>All Art Styles</li>
-                <li>Commercial License</li>
-                <li>Priority Support</li>
-            </ul>
-            <button class="btn btn-primary">Most Popular</button>
-        </div>
-
-        <div class="pricing-card">
-            <h3>Enterprise</h3>
-            <div class="price">Custom</div>
-            <p>For Teams</p>
-            <ul class="pricing-list">
-                <li>Unlimited Everything</li>
-                <li>API Access</li>
-                <li>Dedicated Support</li>
-                <li>White Label</li>
-            </ul>
-            <button class="btn btn-primary">Contact Sales</button>
-        </div>
+        <div class="pricing-card"><h3>Starter</h3><div class="price">Free</div><p>5 Images</p><ul class="pricing-list"><li>5 Free Generations</li><li>Standard Resolution</li><li>10+ Art Styles</li></ul><button class="btn btn-primary">Get Started</button></div>
+        <div class="pricing-card featured"><h3>Professional</h3><div class="price">$29</div><p>Per Month</p><ul class="pricing-list"><li>Unlimited Images</li><li>4K Resolution</li><li>All Art Styles</li><li>Commercial License</li><li>Priority Support</li></ul><button class="btn btn-primary">Most Popular</button></div>
+        <div class="pricing-card"><h3>Enterprise</h3><div class="price">Custom</div><p>For Teams</p><ul class="pricing-list"><li>Unlimited Everything</li><li>API Access</li><li>Dedicated Support</li><li>White Label</li></ul><button class="btn btn-primary">Contact Sales</button></div>
     </div>
 </section>
-
 <footer>
     <h3>ImageForge</h3>
     <p>&copy; 2024 ImageForge. Powered by Advanced AI Technology</p>
 </footer>
-
 <script>
-const API_ENDPOINT = '/api/generate';
 const MAX_FREE = 5;
-
-function getUsed() {
-    return parseInt(localStorage.getItem('imgforge_used') || '0', 10);
-}
-function setUsed(n) {
-    localStorage.setItem('imgforge_used', String(n));
-}
+function getUsed() { return parseInt(localStorage.getItem('imgforge_used') || '0', 10); }
+function setUsed(n) { localStorage.setItem('imgforge_used', String(n)); }
 function updateCounter() {
     const used = getUsed();
     const remaining = Math.max(0, MAX_FREE - used);
@@ -624,67 +233,6 @@ function updateCounter() {
 updateCounter();
 
 document.getElementById('form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    if (getUsed() >= MAX_FREE) {
-        showStatus('You have used all 5 free generations. Upgrade to keep creating.', 'limit');
-        return;
-    }
-
-    const prompt = document.getElementById('prompt').value.trim();
-    const style = document.getElementById('style').value;
-
-    if (!prompt) {
-        showStatus('Please enter a prompt', 'error');
-        return;
-    }
-
-    const submitBtn = document.getElementById('submitBtn');
-    const loading = document.getElementById('loading');
-
-    submitBtn.style.display = 'none';
-    loading.classList.add('show');
-
-    try {
-        const response = await fetch(API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                prompt: prompt + ', style: ' + style + ', high quality, detailed, professional'
-            })
-        });
-
-        const data = await response.json();
-
-        if (data.url || (data.output && data.output[0])) {
-            const imageUrl = data.url || data.output[0];
-            displayResult(imageUrl);
-            setUsed(getUsed() + 1);
-            updateCounter();
-            document.getElementById('prompt').value = '';
-        } else {
-            showStatus('Error: ' + (data.error || 'Generation failed. Add your Replicate token in Vercel settings.'), 'error');
-        }
-    } catch (error) {
-        showStatus('Error: Make sure your Replicate API token is added in Vercel settings.', 'error');
-    } finally {
-        submitBtn.style.display = 'block';
-        loading.classList.remove('show');
-    }
-});
-
-function displayResult(imageUrl) {
-    document.getElementById('resultImage').src = imageUrl;
-    document.getElementById('result').classList.add('show');
-    showStatus('Image generated successfully!', 'success');
-    window.generatedImageUrl = imageUrl;
-}
-
-function downloadImage() {
-    if (!window.generatedImageUrl) return;
-    const a = document.createElement('a');
-    a.href = window.generatedImageUrl;
-    a.dowdocument.getElementById('form').addEventListener('submit', async (e) => {
     e.preventDefault();
     if (getUsed() >= MAX_FREE) {
         showStatus('You have used all 5 free generations. Upgrade to keep creating.', 'limit');
@@ -736,3 +284,37 @@ function downloadImage() {
         loading.classList.remove('show');
     }
 });
+
+function displayResult(imageUrl) {
+    document.getElementById('resultImage').src = imageUrl;
+    document.getElementById('result').classList.add('show');
+    showStatus('Image generated successfully!', 'success');
+    window.generatedImageUrl = imageUrl;
+}
+function downloadImage() {
+    if (!window.generatedImageUrl) return;
+    const a = document.createElement('a');
+    a.href = window.generatedImageUrl;
+    a.download = 'imageforge-' + Date.now() + '.png';
+    a.click();
+}
+function generateAnother() {
+    document.getElementById('result').classList.remove('show');
+    document.getElementById('prompt').focus();
+}
+function showStatus(message, type) {
+    const status = document.getElementById('status');
+    status.textContent = message;
+    status.className = 'status show ' + type;
+    setTimeout(() => status.classList.remove('show'), 6000);
+}
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+</script>
+</body>
+</html>
