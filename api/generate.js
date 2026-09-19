@@ -20,7 +20,14 @@ module.exports = async function handler(req, res) {
       })
     });
     const pred = await r.json();
-    if (pred.error) return res.status(500).json({ error: 'Replicate error: ' + pred.error });
+
+    if (!r.ok) {
+      return res.status(500).json({ error: 'Replicate ' + r.status + ': ' + (pred.detail || pred.error || JSON.stringify(pred)) });
+    }
+    if (!pred.id) {
+      return res.status(500).json({ error: 'No id returned: ' + JSON.stringify(pred) });
+    }
+
     res.json({ id: pred.id, status: pred.status });
   } catch (e) {
     res.status(500).json({ error: 'Server error: ' + e.message });
