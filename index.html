@@ -355,23 +355,5 @@ function downloadImage() {
     const a = document.createElement('a');
     a.href = window.generatedImageUrl;
     a.download = 'imageforge-' + Date.now() + '.png';
-    a.target = '_blank';
-    a.click();
-}
-function generateAnother() {
-    document.getElementById('result').classList.remove('show');
-    document.getElementById('prompt').focus();
-}
-function showStatus(message, type) {
-    const status = document.getElementById('status');
-    status.textContent = message;
-    status.className = 'status show ' + type;
-    setTimeout(() => status.classList.remove('show'), 6000);
-}
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
-    });
+Error: Replicate 429: Request was throttled. Your rate limit for creating predictions is reduced to 6 requests per minute with a burst of 1 requests until you add a payment method. Your rate limit resets in ~3s.
 });
