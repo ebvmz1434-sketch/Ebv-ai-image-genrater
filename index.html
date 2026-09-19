@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ImageForge - AI Image Generator</title>
+<title>ImageForge — AI Image Generator</title>
+<meta name="description" content="ImageForge turns your words into stunning AI-generated images in seconds. Try it free — no card required.">
+<meta name="keywords" content="AI image generator, free AI art, text to image, AI art generator">
+<meta property="og:title" content="ImageForge — AI Image Generator">
+<meta property="og:description" content="Turn your words into stunning AI-generated images in seconds.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
@@ -19,14 +27,13 @@
     --border: #2b2b34;
 }
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
     background: var(--dark);
     color: var(--text);
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
 }
-/* Animated moving aurora background */
 .aurora {
     position: fixed;
     inset: -20%;
@@ -37,42 +44,59 @@ body {
     z-index: 0;
 }
 @keyframes rotateAurora { 100% { transform: rotate(360deg); } }
-
 .bg-orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.18; pointer-events: none; z-index: 0; }
 .orb1 { width: 480px; height: 480px; background: var(--gold); top: -100px; left: -100px; animation: drift1 18s ease-in-out infinite; }
 .orb2 { width: 420px; height: 420px; background: var(--violet); bottom: -100px; right: -80px; animation: drift2 22s ease-in-out infinite; }
 .orb3 { width: 300px; height: 300px; background: var(--crimson); top: 40%; left: 50%; animation: drift3 26s ease-in-out infinite; }
-@keyframes drift1 { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(90px, 60px) scale(1.15); } }
-@keyframes drift2 { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-70px, -60px) scale(1.1); } }
-@keyframes drift3 { 0%, 100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-30%,-60%) scale(1.2); } }
+@keyframes drift1 { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(90px,60px) scale(1.15);} }
+@keyframes drift2 { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-70px,-60px) scale(1.1);} }
+@keyframes drift3 { 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-30%,-60%) scale(1.2);} }
 
 nav { background: rgba(18,18,24,0.85); backdrop-filter: blur(14px); padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); }
-.logo { font-size: 1.8rem; font-weight: 700; background: linear-gradient(90deg, var(--gold-bright), var(--crimson), var(--violet), var(--gold-bright)); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; animation: shimmer 6s linear infinite; }
-@keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
-.nav-links { display: flex; gap: 30px; list-style: none; position: relative; z-index: 1; }
-.nav-links a { color: var(--text); text-decoration: none; font-weight: 500; transition: color 0.3s; position: relative; }
+.logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(90deg, var(--gold-bright), var(--crimson), var(--violet), var(--gold-bright)); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 1px; animation: shimmer 6s linear infinite; }
+@keyframes shimmer { 0%{background-position:0% center;} 100%{background-position:300% center;} }
+.nav-links { display: flex; gap: 30px; list-style: none; }
+.nav-links a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; position: relative; }
 .nav-links a::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--gold-bright), var(--crimson)); transition: width 0.3s; }
 .nav-links a:hover { color: var(--gold-bright); }
 .nav-links a:hover::after { width: 100%; }
 
-.hero { padding: 160px 50px 110px; text-align: center; margin-top: 70px; position: relative; overflow: hidden; z-index: 1; }
+.hero { padding: 170px 50px 100px; text-align: center; margin-top: 70px; position: relative; overflow: hidden; z-index: 1; }
 .hero-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
-.hero h1 { font-size: 3.1rem; margin-bottom: 20px; font-weight: 700; letter-spacing: -1px; }
+.hero-badge { display: inline-block; background: var(--dark3); border: 1px solid var(--border); padding: 8px 20px; border-radius: 50px; font-size: 0.85rem; color: var(--gold-bright); margin-bottom: 25px; animation: fadeDown 0.8s ease-out; }
+@keyframes fadeDown { from{opacity:0; transform:translateY(-15px);} to{opacity:1; transform:translateY(0);} }
+.hero h1 { font-size: 3.2rem; margin-bottom: 20px; font-weight: 800; letter-spacing: -1px; animation: fadeUp 0.8s ease-out; }
+@keyframes fadeUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
 .hero h1 .highlight { background: linear-gradient(90deg, var(--gold-bright), var(--crimson), var(--violet)); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 7s linear infinite; }
-.hero p { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 34px; font-weight: 300; }
-.cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-.btn { padding: 15px 40px; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.35s; text-decoration: none; display: inline-block; letter-spacing: 0.5px; }
+.hero p { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 34px; font-weight: 300; animation: fadeUp 1s ease-out; }
+.cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; animation: fadeUp 1.2s ease-out; }
+.btn { padding: 15px 40px; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.35s; text-decoration: none; display: inline-block; letter-spacing: 0.5px; font-family: inherit; }
 .btn-primary { background: linear-gradient(135deg, var(--gold-bright), var(--crimson)); color: var(--dark); box-shadow: 0 0 20px rgba(232,185,74,0.3), 0 10px 30px rgba(0,0,0,0.4); animation: pulseGlow 2.5s ease-in-out infinite; }
-@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 20px rgba(232,185,74,0.3), 0 10px 30px rgba(0,0,0,0.4); } 50% { box-shadow: 0 0 36px rgba(232,185,74,0.55), 0 10px 30px rgba(0,0,0,0.4); } }
+@keyframes pulseGlow { 0%,100%{box-shadow:0 0 20px rgba(232,185,74,0.3),0 10px 30px rgba(0,0,0,0.4);} 50%{box-shadow:0 0 36px rgba(232,185,74,0.55),0 10px 30px rgba(0,0,0,0.4);} }
 .btn-primary:hover:not(:disabled) { transform: translateY(-4px); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; animation: none; }
 .btn-secondary { background: transparent; color: var(--gold-bright); border: 2px solid var(--gold-bright); }
 .btn-secondary:hover { background: var(--gold-bright); color: var(--dark); }
 
+.stats-bar { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; padding: 40px 20px 0; position: relative; z-index: 1; }
+.stat { text-align: center; }
+.stat-num { font-size: 2rem; font-weight: 800; background: linear-gradient(90deg, var(--gold-bright), var(--crimson)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat-label { font-size: 0.85rem; color: var(--text-dim); margin-top: 4px; }
+
 .section { padding: 100px 50px; position: relative; z-index: 1; }
 .section-alt { background: var(--dark2); }
-.section-title { font-size: 2.3rem; margin-bottom: 50px; text-align: center; color: var(--text); }
+.section-title { font-size: 2.3rem; margin-bottom: 15px; text-align: center; color: var(--text); font-weight: 700; }
+.section-sub { text-align: center; color: var(--text-dim); margin-bottom: 50px; font-size: 1rem; }
 .section-title::after { content: ''; display: block; width: 100px; height: 4px; background: linear-gradient(90deg, var(--gold-bright), var(--crimson), var(--violet)); background-size: 300% auto; animation: shimmer 5s linear infinite; margin: 20px auto 0; border-radius: 2px; }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s ease-out; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
+.step-card { text-align: center; padding: 30px; }
+.step-num { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-bright), var(--crimson)); color: var(--dark); font-weight: 800; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; box-shadow: 0 0 20px rgba(232,185,74,0.3); }
+.step-card h3 { margin-bottom: 10px; font-size: 1.15rem; }
+.step-card p { color: var(--text-dim); font-size: 0.9rem; }
 
 .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
 .gallery-item { border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.4s; background: var(--dark3); border: 1px solid var(--border); }
@@ -90,9 +114,16 @@ nav { background: rgba(18,18,24,0.85); backdrop-filter: blur(14px); padding: 20p
 .feature-card h3 { color: var(--text); margin-bottom: 12px; font-size: 1.2rem; }
 .feature-card p { color: var(--text-dim); font-size: 0.9rem; }
 
+.testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
+.testimonial-card { background: var(--dark3); padding: 30px; border-radius: 15px; border: 1px solid var(--border); }
+.testimonial-stars { color: var(--gold-bright); margin-bottom: 12px; font-size: 1rem; letter-spacing: 2px; }
+.testimonial-card p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 18px; font-style: italic; }
+.testimonial-author { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+.testimonial-role { font-size: 0.8rem; color: var(--text-dim); }
+
 .generator-container { max-width: 700px; margin: 0 auto; background: var(--dark3); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 0 50px rgba(232,185,74,0.1), 0 30px 60px rgba(0,0,0,0.5); }
 .generator-header { background: linear-gradient(135deg, var(--gold-bright), var(--crimson), var(--violet)); background-size: 300% 300%; animation: gradientMove 8s ease infinite; color: var(--dark); padding: 35px; text-align: center; }
-@keyframes gradientMove { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes gradientMove { 0%,100%{background-position:0% 50%;} 50%{background-position:100% 50%;} }
 .generator-header h2 { font-size: 1.8rem; margin-bottom: 8px; }
 .generator-form { padding: 35px; }
 .usage-counter { text-align: center; padding: 12px; background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 20px; font-size: 0.9rem; color: var(--gold-bright); font-weight: 600; }
@@ -101,13 +132,13 @@ label { display: block; font-weight: 600; color: var(--text); margin-bottom: 10p
 textarea, select { width: 100%; padding: 14px; border: 2px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 0.9rem; background: var(--dark2); color: var(--text); transition: all 0.3s; }
 textarea:focus, select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 18px rgba(232,185,74,0.2); }
 textarea { resize: vertical; min-height: 100px; }
-.submit-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--gold-bright), var(--crimson)); color: var(--dark); border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 10px; box-shadow: 0 0 20px rgba(232,185,74,0.25); }
+.submit-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--gold-bright), var(--crimson)); color: var(--dark); border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 10px; box-shadow: 0 0 20px rgba(232,185,74,0.25); font-family: inherit; }
 .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 30px rgba(232,185,74,0.4); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 .loading { display: none; text-align: center; padding: 20px; color: var(--gold-bright); font-weight: 600; }
 .loading.show { display: block; }
 .spinner { display: inline-block; width: 22px; height: 22px; border: 3px solid rgba(232,185,74,0.2); border-top-color: var(--gold-bright); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; vertical-align: middle; }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin { to{transform:rotate(360deg);} }
 .status { padding: 14px; border-radius: 10px; margin-bottom: 18px; display: none; font-size: 0.9rem; }
 .status.show { display: block; }
 .status.error { background: #3a1414; color: #ff8a8a; border: 1px solid #832525; }
@@ -129,6 +160,9 @@ textarea { resize: vertical; min-height: 100px; }
 
 footer { background: var(--dark); padding: 50px; text-align: center; color: var(--text-dim); border-top: 1px solid var(--border); position: relative; z-index: 1; }
 footer h3 { color: var(--gold-bright); margin-bottom: 15px; }
+footer .foot-links { margin-top: 15px; font-size: 0.85rem; }
+footer .foot-links a { color: var(--text-dim); text-decoration: none; margin: 0 10px; }
+footer .foot-links a:hover { color: var(--gold-bright); }
 
 @media (max-width: 768px) {
     nav { padding: 15px 20px; flex-direction: column; gap: 15px; }
@@ -138,6 +172,7 @@ footer h3 { color: var(--gold-bright); margin-bottom: 15px; }
     .section { padding: 60px 20px; }
     .section-title { font-size: 1.7rem; }
     .orb1, .orb2, .orb3 { display: none; }
+    .stats-bar { gap: 30px; }
 }
 </style>
 </head>
@@ -159,17 +194,35 @@ footer h3 { color: var(--gold-bright); margin-bottom: 15px; }
 
 <section class="hero">
     <div class="hero-content">
+        <div class="hero-badge">✨ Trusted by creators worldwide</div>
         <h1>Create <span class="highlight">Stunning Images</span> with AI</h1>
-        <p>Generate professional-quality images in seconds using advanced AI technology</p>
+        <p>Turn your words into professional-quality images in seconds. No design skills needed.</p>
         <div class="cta-buttons">
-            <a href="#generator" class="btn btn-primary">Start Creating - 5 Free</a>
+            <a href="#generator" class="btn btn-primary">Start Creating — 5 Free</a>
             <a href="#gallery" class="btn btn-secondary">View Gallery</a>
         </div>
     </div>
+    <div class="stats-bar">
+        <div class="stat"><div class="stat-num">50K+</div><div class="stat-label">Images Created</div></div>
+        <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Art Styles</div></div>
+        <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">User Rating</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free to Start</div></div>
+    </div>
 </section>
 
-<section class="section" id="gallery">
+<section class="section section-alt reveal" id="how">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">Three simple steps to your perfect image</p>
+    <div class="steps-grid">
+        <div class="step-card"><div class="step-num">1</div><h3>Describe</h3><p>Type what you want to see in plain words</p></div>
+        <div class="step-card"><div class="step-num">2</div><h3>Choose a Style</h3><p>Pick from realistic, anime, fantasy, and more</p></div>
+        <div class="step-card"><div class="step-num">3</div><h3>Generate</h3><p>Your image appears in seconds, ready to download</p></div>
+    </div>
+</section>
+
+<section class="section reveal" id="gallery">
     <h2 class="section-title">Generated Examples</h2>
+    <p class="section-sub">A glimpse of what ImageForge can create</p>
     <div class="gallery-grid">
         <div class="gallery-item"><img src="https://picsum.photos/seed/cityscape1/400/300" alt="Futuristic cityscape"><div class="gallery-label"><p><strong>Futuristic Cityscape</strong></p><p>Neon lights, cyberpunk style, night scene</p><span class="tag">Cyberpunk</span></div></div>
         <div class="gallery-item"><img src="https://picsum.photos/seed/abstract2/400/300" alt="Abstract digital art"><div class="gallery-label"><p><strong>Abstract Digital Art</strong></p><p>Colorful, modern, artistic composition</p><span class="tag">Digital Art</span></div></div>
@@ -180,19 +233,30 @@ footer h3 { color: var(--gold-bright); margin-bottom: 15px; }
     </div>
 </section>
 
-<section class="section section-alt" id="features">
+<section class="section section-alt reveal" id="features">
     <h2 class="section-title">Why Choose ImageForge</h2>
+    <p class="section-sub">Everything you need to bring ideas to life</p>
     <div class="features-grid">
         <div class="feature-card"><h3>Lightning Fast</h3><p>Generate images in seconds with our optimized AI engine</p></div>
         <div class="feature-card"><h3>Multiple Styles</h3><p>Choose from 10+ art styles: realistic, cartoon, anime, and more</p></div>
-        <div class="feature-card"><h3>5 Free Images</h3><p>Try it free - no card required for your first 5 generations</p></div>
+        <div class="feature-card"><h3>5 Free Images</h3><p>Try it free — no card required for your first 5 generations</p></div>
         <div class="feature-card"><h3>Secure</h3><p>Your images and data are protected with industry-standard encryption</p></div>
         <div class="feature-card"><h3>Mobile Friendly</h3><p>Works perfectly on desktop, tablet, and mobile devices</p></div>
         <div class="feature-card"><h3>High Quality</h3><p>Professional-grade resolution images ready to use</p></div>
     </div>
 </section>
 
-<section class="section" id="generator">
+<section class="section reveal" id="testimonials">
+    <h2 class="section-title">What People Say</h2>
+    <p class="section-sub">Loved by designers, marketers, and hobbyists alike</p>
+    <div class="testimonial-grid">
+        <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p>"I used ImageForge to create visuals for my whole social media page. Saved me hours of work."</p><div class="testimonial-author">Maya R.</div><div class="testimonial-role">Content Creator</div></div>
+        <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p>"The style options are incredible. I got a professional logo concept in under a minute."</p><div class="testimonial-author">Daniel K.</div><div class="testimonial-role">Small Business Owner</div></div>
+        <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p>"Simple, fast, and the results actually look good. My go-to tool now."</p><div class="testimonial-author">Priya S.</div><div class="testimonial-role">Freelance Designer</div></div>
+    </div>
+</section>
+
+<section class="section section-alt reveal" id="generator">
     <div class="generator-container">
         <div class="generator-header">
             <h2>Create Your Image</h2>
@@ -233,8 +297,9 @@ footer h3 { color: var(--gold-bright); margin-bottom: 15px; }
     </div>
 </section>
 
-<section class="section section-alt" id="pricing">
+<section class="section reveal" id="pricing">
     <h2 class="section-title">Simple Pricing</h2>
+    <p class="section-sub">Start free, upgrade when you're ready</p>
     <div class="pricing-grid">
         <div class="pricing-card"><h3>Starter</h3><div class="price">Free</div><p>5 Images</p><ul class="pricing-list"><li>5 Free Generations</li><li>Standard Resolution</li><li>10+ Art Styles</li></ul><button class="btn btn-primary">Get Started</button></div>
         <div class="pricing-card featured"><h3>Professional</h3><div class="price">$29</div><p>Per Month</p><ul class="pricing-list"><li>Unlimited Images</li><li>4K Resolution</li><li>All Art Styles</li><li>Commercial License</li><li>Priority Support</li></ul><button class="btn btn-primary">Most Popular</button></div>
@@ -245,6 +310,7 @@ footer h3 { color: var(--gold-bright); margin-bottom: 15px; }
 <footer>
     <h3>ImageForge</h3>
     <p>&copy; 2024 ImageForge. Powered by Advanced AI Technology</p>
+    <div class="foot-links"><a href="#gallery">Gallery</a> · <a href="#features">Features</a> · <a href="#pricing">Pricing</a></div>
 </footer>
 
 <script>
@@ -335,6 +401,14 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
         if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
 });
+
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.15 });
+revealEls.forEach(function(el) { revealObserver.observe(el); });
 </script>
 </body>
-</html>    
+</html>
