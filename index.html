@@ -248,38 +248,97 @@ document.getElementById('form').addEventListener('submit', async (e) => {
     loading.classList.add('show');
 
     try {
-        const startRes = await fetch('/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt: prompt + ', style: ' + style + ', high quality, detailed' })
-        });
-        const startData = await startRes.json();
+        const fullPrompt = prompt + ', ' + style + ' style, high quality, detailed';
+        const seed = Math.floor(Math.random() * 100000);
+        const imageUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(fullPrompt) + '?width=768&height=768&seed=' + seed + '&nologo=true';
 
-        if (!startData.id) {
-            showStatus('Error: ' + (startData.error || 'Could not start generation'), 'error');
-        } else {
-            let result = startData;
-            let attempts = 0;
-            while (result.status !== 'succeeded' && result.status !== 'failed' && attempts < 40) {
-                await new Promise(r => setTimeout(r, 1500));
-                const pollRes = await fetch('/api/status?id=' + startData.id);
-                result = await pollRes.json();
-                attempts++;
-            }
-            if (result.status === 'succeeded' && result.output && result.output[0]) {
-                displayResult(result.output[0]);
-                setUsed(getUsed() + 1);
-                updateCounter();
-                document.getElementById('prompt').value = '';
-            } else if (result.status === 'failed') {
-                showStatus('Error: Generation failed on Replicate side.', 'error');
-            } else {
-                showStatus('Error: Timed out, try again.', 'error');
-            }
-        }
+        const img = new Image();
+        img.onload = () => {
+            displayResult(imageUrl);
+            setUsed(getUsed() + 1);
+            updateCounter();
+            document.getElementById('prompt').value = '';
+            submitBtn.style.display = 'block';
+            loading.classList.remove('show');
+        };
+        img.onerror = () => {
+            showStatus('Error: Image failed to load, try again.', 'error');
+            submitBtn.style.display = 'block';
+            loading.classList.remove('show');
+        };
+        img.src = imageUrl;
     } catch (error) {
         showStatus('Error: ' + error.message, 'error');
-    } finally {
+        submitBtn.style.display = 'block';
+        loading.classList.remove('show');
+    }
+});
+
+function displayResult(imageUrl) {
+    document.getElementById('resultImage').src = imageUrl;
+    document.getElementById('result').classList.add('show');
+    showStatus('Image generated successfully!', 'success');
+    window.generatedImageUrl = imageUrl;
+}
+function downloadImage() {
+    if (!window.generatedImageUrl) return;
+const MAX_FREE = 5;
+function getUsed() { return parseInt(localStorage.getItem('imgforge_used') || '0', 10); }
+function setUsed(n) { localStorage.setItem('imgforge_used', String(n)); }
+function updateCounter() {
+    const used = getUsed();
+    const remaining = Math.max(0, MAX_FREE - used);
+    const counter = document.getElementById('usageCounter');
+    const btn = document.getElementById('submitBtn');
+    if (remaining > 0) {
+        counter.textContent = remaining + ' free generation' + (remaining === 1 ? '' : 's') + ' remaining';
+        btn.disabled = false;
+        btn.textContent = 'Generate Image';
+    } else {
+        counter.textContent = 'Free limit reached - upgrade to keep generating';
+        btn.disabled = true;
+        btn.textContent = 'Upgrade to Continue';
+    }
+}
+updateCounter();
+
+document.getElementById('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (getUsed() >= MAX_FREE) {
+        showStatus('You have used all 5 free generations. Upgrade to keep creating.', 'limit');
+        return;
+    }
+    const prompt = document.getElementById('prompt').value.trim();
+    const style = document.getElementById('style').value;
+    if (!prompt) { showStatus('Please enter a prompt', 'error'); return; }
+
+    const submitBtn = document.getElementById('submitBtn');
+    const loading = document.getElementById('loading');
+    submitBtn.style.display = 'none';
+    loading.classList.add('show');
+
+    try {
+        const fullPrompt = prompt + ', ' + style + ' style, high quality, detailed';
+        const seed = Math.floor(Math.random() * 100000);
+        const imageUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(fullPrompt) + '?width=768&height=768&seed=' + seed + '&nologo=true';
+
+        const img = new Image();
+        img.onload = () => {
+            displayResult(imageUrl);
+            setUsed(getUsed() + 1);
+            updateCounter();
+            document.getElementById('prompt').value = '';
+            submitBtn.style.display = 'block';
+            loading.classList.remove('show');
+        };
+        img.onerror = () => {
+            showStatus('Error: Image failed to load, try again.', 'error');
+            submitBtn.style.display = 'block';
+            loading.classList.remove('show');
+        };
+        img.src = imageUrl;
+    } catch (error) {
+        showStatus('Error: ' + error.message, 'error');
         submitBtn.style.display = 'block';
         loading.classList.remove('show');
     }
@@ -296,6 +355,7 @@ function downloadImage() {
     const a = document.createElement('a');
     a.href = window.generatedImageUrl;
     a.download = 'imageforge-' + Date.now() + '.png';
+    a.target = '_blank';
     a.click();
 }
 function generateAnother() {
@@ -315,6 +375,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
 });
-</script>
-</body>
-</html>
