@@ -25,22 +25,4 @@ module.exports = async function handler(req, res) {
   } catch (e) {
     res.status(500).json({ error: 'Server error: ' + e.message });
   }
-};      if (pred.status === 'failed') {
-        return res.status(500).json({ error: 'Generation failed on Replicate side' });
-      }
-      await new Promise(s => setTimeout(s, 1500));
-      const sr = await fetch(`https://api.replicate.com/v1/predictions/${pred.id}`, {
-        headers: { 'Authorization': `Token ${token}` }
-      });
-      pred = await sr.json();
-    }
-
-    if (pred.status !== 'succeeded') {
-      return res.status(500).json({ error: 'Timed out waiting for image' });
-    }
-
-    res.json({ url: pred.output?.[0], success: true });
-  } catch (e) {
-    res.status(500).json({ error: 'Server error: ' + e.message });
-  }
 };
